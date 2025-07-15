@@ -140,7 +140,7 @@ graph LR
 
 ### Main Controllers
 
-#### `MainViewController.swift` (95KB, 2259 lines)
+#### `MainViewController.swift` (113KB, 2531 lines)
 - **Primary UI Controller**: Manages the main interface and user interactions
 - **Content Type Management**: Handles PDF, image, and GIF content switching
 - **Analysis Orchestration**: Coordinates the entire analysis pipeline
@@ -148,7 +148,7 @@ graph LR
 - **Progress Tracking**: Provides real-time analysis progress updates
 - **Error Handling**: Comprehensive error management and user feedback
 
-#### `PDFAnalysisManager.swift` (25KB, 645 lines)
+#### `PDFAnalysisManager.swift` (26KB, 648 lines)
 - **Analysis Coordinator**: Orchestrates the entire PDF analysis process
 - **Content Extraction**: Manages text and image extraction from PDFs
 - **Granularity Support**: Handles word, sentence, and paragraph-level analysis
@@ -158,7 +158,7 @@ graph LR
 
 ### AI & Analysis
 
-#### `GPTEmotionAnalyzer.swift` (50KB, 1140 lines)
+#### `GPTEmotionAnalyzer.swift` (51KB, 1139 lines)
 - **AI Analysis Engine**: Handles all GPT-4 and GPT-4 Vision API calls
 - **Text Analysis**: Analyzes text content for emotional patterns with granularity
 - **Image Analysis**: Uses GPT-4 Vision for image emotion detection
@@ -167,7 +167,7 @@ graph LR
 - **Position Mapping**: Maps AI analysis results back to PDF coordinates
 - **Error Recovery**: Handles API failures gracefully
 
-#### `PDFContentExtractor.swift` (56KB, 1340 lines)
+#### `PDFContentExtractor.swift` (62KB, 1415 lines)
 - **Content Extraction**: Extracts text and images from PDF documents using PDFKit
 - **Real Position Detection**: Uses PDFKit native APIs for accurate positioning
 - **Image Detection**: Direct access to PDF XObject streams and resources
@@ -178,7 +178,7 @@ graph LR
 
 ### Haptic System
 
-#### `HapticLibrary.swift` (52KB, 1447 lines)
+#### `HapticLibrary.swift` (52KB, 1412 lines)
 - **Pattern Management**: Manages haptic pattern library and matching
 - **GPT Embedding Service**: Provides intelligent pattern matching using embeddings
 - **Vector Caching**: Optimizes performance with cached embeddings
@@ -187,7 +187,7 @@ graph LR
 - **Batch Processing**: Efficient processing of multiple emotions
 - **Rate Limiting**: Prevents API quota exhaustion
 
-#### `BLEController.swift` (15KB, 404 lines)
+#### `BLEController.swift` (15KB, 403 lines)
 - **Device Communication**: Manages Bluetooth Low Energy connection
 - **Haptic Transmission**: Sends haptic patterns to MagicPen device
 - **Real-time Control**: Provides immediate haptic feedback control
@@ -197,7 +197,7 @@ graph LR
 
 ### UI Components
 
-#### `HapticContentSelectionView.swift` (31KB, 775 lines)
+#### `HapticContentSelectionView.swift` (36KB, 897 lines)
 - **Visual Overlay**: Displays emotion regions on PDF content
 - **Touch Detection**: Handles Apple Pencil and touch interactions
 - **Region Highlighting**: Shows active emotion regions
@@ -207,7 +207,7 @@ graph LR
 
 ### Data Models
 
-#### `PDFAnalysisModels.swift` (8.5KB, 283 lines)
+#### `PDFAnalysisModels.swift` (8.5KB, 282 lines)
 - **Analysis Modes**: Defines text-only, image-only, and combined analysis
 - **Granularity Levels**: Supports word, sentence, and paragraph analysis
 - **Result Structures**: Defines data structures for analysis results
@@ -215,7 +215,7 @@ graph LR
 - **Emotion Types**: Defines supported emotion categories
 - **Position Models**: Handles coordinate and bounding box structures
 
-#### `Models.swift` (6.3KB, 241 lines)
+#### `Models.swift` (6.3KB, 240 lines)
 - **Core Data Models**: Defines fundamental data structures
 - **API Models**: Handles OpenAI API request/response models
 - **Haptic Models**: Defines haptic pattern and feedback structures
@@ -223,13 +223,13 @@ graph LR
 
 ### Utilities
 
-#### `GranularityTestViewController.swift` (14KB, 303 lines)
+#### `GranularityTestViewController.swift` (13KB, 305 lines)
 - **Testing Interface**: Provides testing interface for granularity analysis
 - **Performance Testing**: Tests different granularity levels
 - **Result Validation**: Validates analysis results
 - **Debug Interface**: Provides debugging capabilities
 
-#### `APIKey.swift` (204B, 11 lines)
+#### `APIKey.swift` (324B, 12 lines)
 - **API Configuration**: Manages OpenAI API key storage
 - **Security**: Secure API key handling
 
@@ -275,74 +275,75 @@ graph LR
 
 ## 🔄 Process Flow
 
-### Phase 1: Document Processing
+### Corrected Text Analysis Pipeline
+
+**IMPORTANT**: The actual implementation follows this precise workflow:
+
 ```mermaid
-sequenceDiagram
-    participant U as User
-    participant UI as MainViewController
-    participant PDF as PDFContentExtractor
-    participant CM as PDFAnalysisManager
-    
-    U->>UI: Import PDF Document
-    UI->>PDF: Extract Content
-    PDF->>PDF: PDFKit Native Extraction
-    PDF->>PDF: Real Position Detection
-    PDF->>CM: Return Structured Content
-    CM->>UI: Display PDF with Navigation
+graph TB
+    A[📄 PDF Document] --> B[📝 Extract Full Text]
+    B --> C[🔄 Combine All Pages]
+    C --> D[✂️ Split into Chunks]
+    D --> E[🤖 GPT-4 Analysis]
+    E --> F[📝 GPT Returns Text Segments]
+    F --> G[🔍 Search Text in PDF]
+    G --> H[📍 Find Positions via PDFKit]
+    H --> I[📊 Create Emotion Regions]
 ```
 
-### Phase 2: AI Analysis Pipeline
-```mermaid
-sequenceDiagram
-    participant UI as MainViewController
-    participant AM as PDFAnalysisManager
-    participant GPT as GPTEmotionAnalyzer
-    participant GV as GPT-4 Vision
-    participant ER as Emotion Results
-    
-    UI->>AM: Start Analysis (Mode + Granularity)
-    AM->>GPT: Send Text Content
-    AM->>GV: Send Image Content
-    GPT->>ER: Return Text Emotions
-    GV->>ER: Return Image Emotions
-    ER->>AM: Aggregate Results
-    AM->>UI: Display Emotion Regions
+**Key Point**: GPT analyzes text and **returns emotional text segments**, then the system **searches for these GPT-returned segments** in the PDF to find their positions.
+
+### Phase 1: Content Extraction
+```swift
+// Step 1: Extract all text from PDF pages
+let pageTexts = extractTextFromAllPages(pdfDocument)
+let textPositions = extractTextPositionsFromAllPages(pdfDocument)
 ```
 
-### Phase 3: Haptic Pattern Matching
-```mermaid
-sequenceDiagram
-    participant AM as PDFAnalysisManager
-    participant HL as HapticLibrary
-    participant GE as GPTEmbeddingService
-    participant VC as Vector Cache
-    participant HP as Haptic Patterns
-    
-    AM->>HL: Request Pattern Matching
-    HL->>GE: Get Emotion Embeddings
-    GE->>VC: Check Cache
-    VC->>GE: Return Cached Vectors
-    GE->>HL: Calculate Similarities
-    HL->>HP: Select Best Patterns
-    HP->>AM: Return Matched Patterns
+### Phase 2: GPT Analysis (Text → Emotions)
+```swift
+// Step 2: Send combined text to GPT for analysis
+let allText = pageTexts.joined(separator: "\n\n--- PAGE BREAK ---\n\n")
+let gptSegments = try await analyzeTextByGranularity(text: allText, granularity: granularity)
+
+// GPT returns: [{"text": "exact text from PDF", "emotion": "joy", "confidence": 0.85}]
 ```
 
-### Phase 4: Real-time Interaction
-```mermaid
-sequenceDiagram
-    participant U as User
-    participant AP as Apple Pencil
-    participant UI as MainViewController
-    participant BC as BLEController
-    participant MP as MagicPen
-    
-    U->>AP: Touch Emotion Region
-    AP->>UI: Send Touch Coordinates
-    UI->>UI: Identify Active Region
-    UI->>BC: Send Haptic Pattern
-    BC->>MP: Transmit via BLE
-    MP->>U: Provide Haptic Feedback
+### Phase 3: Position Mapping (Search GPT Results)
+```swift
+// Step 3: Search for GPT-returned text segments in PDF
+let textRegions = matchSegmentsToPagesWithRealPositions(
+    gptSegments: gptSegments,        // Text segments returned by GPT
+    pageTexts: pageTexts,            // Original page texts to search in
+    textPositions: textPositions,    // PDF position references
+    granularity: granularity
+)
+
+// This function performs:
+// 1. findExactTextMatch() - tries to find exact text match
+// 2. findFuzzyTextMatch() - fallback to similarity matching
+// 3. Uses PDFKit's findString() to get precise coordinates
 ```
+
+### Phase 4: Haptic Pattern Matching
+```swift
+// Step 4: Match emotions to haptic patterns
+let emotionMatches = try await batchMatchEmotionsToPatterns(emotions: allEmotions)
+```
+
+### Actual Implementation vs Previous Description
+
+**❌ Previous Incorrect Description:**
+"Extract positions → Analyze content at positions"
+
+**✅ Actual Implementation:**
+"Analyze content → Get emotional text segments from GPT → Search for those segments in PDF → Find positions"
+
+This approach is more robust because:
+1. **GPT sees full context** for better emotion analysis
+2. **Search-based positioning** handles text variations better
+3. **Granularity-aware** matching works at word/sentence/paragraph level
+4. **Fallback mechanisms** handle cases where exact matching fails
 
 ## 🎮 User Experience Flow
 
