@@ -22,12 +22,13 @@ DerivedData
 # CocoaPods
 Pods/
 
-# API Keys and Secrets
-APIKey.swift
-**/APIKey.swift
+# API Keys and Secrets (but allow template files)
+# APIKey.swift (commented out to allow template)
 .env
 *.pem
 *.key
+config.plist
+secrets.plist
 
 # Build products
 build/
