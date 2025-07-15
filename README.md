@@ -39,75 +39,66 @@ Haptic Content Reader transforms traditional PDF reading into an immersive, emot
 
 ```mermaid
 graph TB
+    %% Vector Initialization
+    A0[📚 Initialize Tactile Vector Cache<br><small>HapticLibrary.swift:639-679</small>] --> A[📄 PDF Document]
+    
     %% User Input Layer
-    A[📄 PDF Document] --> B[📱 MainViewController]
+    A --> B[📱 MainViewController<br><small>MainViewController.swift</small>]
     B --> C[🔧 Analysis Configuration]
     
-    %% Content Extraction Layer
-    C --> D[📖 PDFContentExtractor]
-    D --> E[🔍 PDFKit Native Image Detection]
-    D --> F[📝 PDFKit Text Extraction]
+    %% Content Extraction Layer  
+    C --> D[📖 PDFContentExtractor<br><small>PDFContentExtractor.swift:181-225</small>]
+    D --> E[🔍 PDFKit Native Image Detection<br><small>PDFContentExtractor.swift:403-575</small>]
+    D --> F[📝 PDFKit Text Extraction<br><small>PDFContentExtractor.swift:243-333</small>]
     E --> G[🖼️ Image Regions with Real Positions]
-    F --> H[📄 Text Positions with Coordinates]
+    F --> H[📄 Text Content with Coordinates]
     
-    %% Content Processing Layer
-    G --> I[🖼️ Image Processing]
-    H --> J[📋 Content Validation]
-    I --> J
+    %% Parallel AI Analysis
+    H --> I[📝 GPT-4 Text Analysis<br><small>GPTEmotionAnalyzer.swift:138-163</small>]
+    G --> J[👁️ GPT-4 Vision Analysis<br><small>GPTEmotionAnalyzer.swift:566-653</small>]
     
-    %% AI Analysis Layer
-    J --> K[🤖 GPTEmotionAnalyzer]
-    K --> L[👁️ GPT-4 Vision Analysis]
-    K --> M[📝 GPT-4 Text Analysis]
+    %% Text Processing Branch
+    I --> K[📍 Text Position Search<br><small>MainViewController.swift:2112-2151</small>]
+    K --> L[📊 Text Emotion Regions]
     
-    %% Granularity Processing
-    M --> N{📏 Granularity Level}
-    N -->|Word| O[🔤 Word-level Analysis]
-    N -->|Sentence| P[📝 Sentence-level Analysis]
-    N -->|Paragraph| Q[📄 Paragraph-level Analysis]
+    %% Image Processing Branch  
+    J --> M[📊 Image Emotion Regions]
     
-    %% Emotion Detection
-    O --> R[😊 Emotion Detection]
-    P --> R
-    Q --> R
-    L --> S[🎨 Visual Emotion Detection]
+    %% Unified Embedding Matching
+    L --> N[🧠 GPT Embedding Service<br><small>HapticLibrary.swift:1079-1180</small>]
+    M --> N
+    N --> O[📦 Vector Cache Lookup]
+    O --> P[🎵 Pattern Similarity Matching]
+    P --> Q[📳 Haptic Pattern Selection]
     
-    %% Result Processing
-    R --> T[📊 Emotion Regions]
-    S --> T
-    T --> U[🎯 Position Mapping]
-    
-    %% Haptic Pattern Matching
-    U --> V[🧠 GPTEmbeddingService]
-    V --> W[📦 Vector Cache]
-    W --> X[🎵 Pattern Matching]
-    X --> Y[📳 Haptic Pattern Selection]
+    %% Results Integration
+    Q --> R[🧩 Match Areas and Patterns<br><small>MainViewController.swift:643-757</small>]
     
     %% Device Communication
-    Y --> Z[📡 BLEController]
-    Z --> AA[🖊️ MagicPen Device]
+    R --> S[📡 BLEController<br><small>BLEController.swift</small>]
+    S --> T[🖊️ MagicPen Device]
     
     %% User Interaction
-    AA --> BB[👆 Apple Pencil Touch]
-    BB --> CC[🎵 Real-time Haptic Feedback]
+    T --> U[👆 Apple Pencil Touch]
+    U --> V[🎵 Real-time Haptic Feedback]
     
     %% Visual Feedback
-    CC --> DD[🎨 HapticContentSelectionView]
-    DD --> EE[🔄 User Experience Loop]
-    EE --> B
+    V --> W[🎨 HapticContentSelectionView<br><small>HapticContentSelectionView.swift</small>]
+    W --> X[🔄 User Experience Loop]
+    X --> B
     
-    %% Styling
+    %% Styling with script references
     classDef userLayer fill:#e1f5fe,stroke:#01579b,stroke-width:2px
     classDef extractionLayer fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
     classDef aiLayer fill:#e8f5e8,stroke:#1b5e20,stroke-width:2px
     classDef hapticLayer fill:#fff3e0,stroke:#e65100,stroke-width:2px
     classDef deviceLayer fill:#fce4ec,stroke:#880e4f,stroke-width:2px
     
-    class A,B,C userLayer
-    class D,E,F,G,H,I,J extractionLayer
-    class K,L,M,N,O,P,Q,R,S,T,U,V,W,X aiLayer
-    class Y,Z,AA,BB,CC hapticLayer
-    class DD,EE deviceLayer
+    class A0,A,B,C userLayer
+    class D,E,F,G,H extractionLayer
+    class I,J,K,L,M,N,O,P,Q aiLayer
+    class R,S,T,U,V hapticLayer
+    class W,X deviceLayer
 ```
 
 ### Text vs Image Analysis Pipeline
@@ -275,75 +266,96 @@ graph LR
 
 ## 🔄 Process Flow
 
-### Corrected Text Analysis Pipeline
+### **Accurate System Pipeline** ⭐
 
-**IMPORTANT**: The actual implementation follows this precise workflow:
+**Your corrected pipeline accurately represents the actual system implementation:**
 
 ```mermaid
-graph TB
-    A[📄 PDF Document] --> B[📝 Extract Full Text]
-    B --> C[🔄 Combine All Pages]
-    C --> D[✂️ Split into Chunks]
-    D --> E[🤖 GPT-4 Analysis]
-    E --> F[📝 GPT Returns Text Segments]
-    F --> G[🔍 Search Text in PDF]
-    G --> H[📍 Find Positions via PDFKit]
-    H --> I[📊 Create Emotion Regions]
+graph LR
+
+A1[📚 Convert tactile mode tags<br>to vectors using embedding<br><small>📍 HapticLibrary.swift:639-679</small>]
+
+A2[📄 Extract text and images<br>using PDFKit<br><small>📍 PDFContentExtractor.swift:181-225</small>]
+A1 --> A2
+
+subgraph Text Processing
+    A2 --> B1[🧠 GPT-4 Text Emotion Analysis<br><small>📍 GPTEmotionAnalyzer.swift:138-163</small>]
+    B1 --> B2[📍 Determine area<br>via fuzzy/precise search<br><small>📍 MainViewController.swift:2112-2151</small>]
+end
+
+subgraph Image Processing  
+    A2 --> C1[🧠 GPT-4 Vision Image Emotion Analysis<br><small>📍 GPTEmotionAnalyzer.swift:566-653</small>]
+    C1 --> C2[📍 Determine area<br>via image position<br><small>📍 PDFContentExtractor.swift:403-575</small>]
+end
+
+B2 --> D1[gpt-4 embedding<br><small>📍 HapticLibrary.swift:1079-1180</small>]
+C2 --> D1
+
+D1 --> D2[🧩 Match areas and tactile patterns<br><small>📍 MainViewController.swift:643-757</small>]
 ```
 
-**Key Point**: GPT analyzes text and **returns emotional text segments**, then the system **searches for these GPT-returned segments** in the PDF to find their positions.
+### **Detailed Component Mapping**
 
-### Phase 1: Content Extraction
-```swift
-// Step 1: Extract all text from PDF pages
-let pageTexts = extractTextFromAllPages(pdfDocument)
-let textPositions = extractTextPositionsFromAllPages(pdfDocument)
-```
+#### **📚 A1: Convert tactile mode tags to vectors using embedding**
+- **Location**: `HapticLibrary.swift:639-679`
+- **Function**: `initializeVectorCache()`
+- **Details**: Converts haptic pattern tags and emotion words to GPT embeddings for intelligent matching
 
-### Phase 2: GPT Analysis (Text → Emotions)
-```swift
-// Step 2: Send combined text to GPT for analysis
-let allText = pageTexts.joined(separator: "\n\n--- PAGE BREAK ---\n\n")
-let gptSegments = try await analyzeTextByGranularity(text: allText, granularity: granularity)
+#### **📄 A2: Extract text and images using PDFKit**
+- **Location**: `PDFContentExtractor.swift:181-225`
+- **Function**: `extractContentFromDocument()`
+- **Details**: Uses PDFKit native APIs to extract text with positions and images with real coordinates
 
-// GPT returns: [{"text": "exact text from PDF", "emotion": "joy", "confidence": 0.85}]
-```
+#### **🧠 B1: GPT-4 Text Emotion Analysis**
+- **Location**: `GPTEmotionAnalyzer.swift:138-163`
+- **Function**: `analyzeTextByGranularity()`
+- **Details**: Sends text to GPT-4 with granularity-specific prompts, returns emotional text segments
 
-### Phase 3: Position Mapping (Search GPT Results)
-```swift
-// Step 3: Search for GPT-returned text segments in PDF
-let textRegions = matchSegmentsToPagesWithRealPositions(
-    gptSegments: gptSegments,        // Text segments returned by GPT
-    pageTexts: pageTexts,            // Original page texts to search in
-    textPositions: textPositions,    // PDF position references
-    granularity: granularity
-)
+#### **📍 B2: Determine area via fuzzy/precise search**
+- **Location**: `MainViewController.swift:2112-2151`
+- **Function**: `searchAndCreateTextSegments()`
+- **Details**: Searches GPT-returned text segments in PDF using exact/fuzzy matching to find positions
 
-// This function performs:
-// 1. findExactTextMatch() - tries to find exact text match
-// 2. findFuzzyTextMatch() - fallback to similarity matching
-// 3. Uses PDFKit's findString() to get precise coordinates
-```
+#### **🧠 C1: GPT-4 Vision Image Emotion Analysis**
+- **Location**: `GPTEmotionAnalyzer.swift:566-653`
+- **Function**: `analyzeImagesWithGPT4Vision()`
+- **Details**: Analyzes images with GPT-4 Vision (gpt-4o model) for visual emotion detection
 
-### Phase 4: Haptic Pattern Matching
-```swift
-// Step 4: Match emotions to haptic patterns
-let emotionMatches = try await batchMatchEmotionsToPatterns(emotions: allEmotions)
-```
+#### **📍 C2: Determine area via image position**
+- **Location**: `PDFContentExtractor.swift:403-575`
+- **Function**: `extractImagesFromPDFResources()`
+- **Details**: Uses PDF XObject streams and content stream parsing to get precise image positions
 
-### Actual Implementation vs Previous Description
+#### **🔗 D1: GPT-4 embedding**
+- **Location**: `HapticLibrary.swift:1079-1180`
+- **Function**: `getRecommendedPatternWithEmbedding()`
+- **Details**: Uses cached emotion vectors and pattern vectors for fast similarity matching
 
-**❌ Previous Incorrect Description:**
-"Extract positions → Analyze content at positions"
+#### **🧩 D2: Match areas and tactile patterns**
+- **Location**: `MainViewController.swift:643-757`
+- **Function**: `displayAnalysisResults()`
+- **Details**: Combines emotion regions with haptic patterns using embedding similarity scores
 
-**✅ Actual Implementation:**
-"Analyze content → Get emotional text segments from GPT → Search for those segments in PDF → Find positions"
+### **Key Accuracy Points of Your Pipeline** ✅
 
-This approach is more robust because:
-1. **GPT sees full context** for better emotion analysis
-2. **Search-based positioning** handles text variations better
-3. **Granularity-aware** matching works at word/sentence/paragraph level
-4. **Fallback mechanisms** handle cases where exact matching fails
+1. **Tactile Mode Vector Initialization First**: Correctly shows that embedding vectors are prepared before processing
+2. **Parallel Text/Image Processing**: Accurately represents that text and image analysis happen independently
+3. **Search-Based Positioning**: Your pipeline correctly shows that GPT returns content first, then positions are determined by search
+4. **Unified Embedding Matching**: Shows that both text and image results go through the same embedding matching process
+5. **Final Pattern Association**: Correctly represents the final step where areas are matched to tactile patterns
+
+### **Script Cross-References**
+
+| Component | Primary Script | Supporting Scripts | Line Numbers |
+|-----------|---------------|-------------------|--------------|
+| **Embedding Initialization** | `HapticLibrary.swift` | `GPTEmbeddingService` | 639-679, 162-285 |
+| **Content Extraction** | `PDFContentExtractor.swift` | `MainViewController.swift` | 181-225, 1972-2090 |
+| **GPT-4 Text Analysis** | `GPTEmotionAnalyzer.swift` | `PDFAnalysisManager.swift` | 138-163, 159-203 |
+| **GPT-4 Vision Analysis** | `GPTEmotionAnalyzer.swift` | `PDFAnalysisModels.swift` | 566-653, 123-283 |
+| **Position Search** | `MainViewController.swift` | `GPTEmotionAnalyzer.swift` | 2112-2151, 164-230 |
+| **Pattern Matching** | `HapticLibrary.swift` | `MainViewController.swift` | 1079-1280, 643-757 |
+
+This pipeline accurately reflects the **actual code implementation** and shows the correct flow from initialization → extraction → analysis → positioning → pattern matching.
 
 ## 🎮 User Experience Flow
 
