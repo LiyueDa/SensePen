@@ -1,0 +1,33 @@
+{
+  "originHash" : "13500a624946c9fa94f0c5b8f678d38b3702fc88a4575877b9f2b33abe01ffeb",
+  "pins" : [
+    {
+      "identity" : "alamofire",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Alamofire/Alamofire",
+      "state" : {
+        "revision" : "513364f870f6bfc468f9d2ff0a95caccc10044c5",
+        "version" : "5.10.2"
+      }
+    },
+    {
+      "identity" : "openai",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/MacPaw/OpenAI",
+      "state" : {
+        "revision" : "e59e4923acc924db51d415e99d0a76c7d54037e0",
+        "version" : "0.3.6"
+      }
+    },
+    {
+      "identity" : "openaiswift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/adamrushy/OpenAISwift",
+      "state" : {
+        "revision" : "ca66fb720d6ebb657601db5a0852b830ae310a4c",
+        "version" : "1.4.1"
+      }
+    }
+  ],
+  "version" : 3
+}
